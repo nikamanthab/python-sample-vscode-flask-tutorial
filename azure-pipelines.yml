@@ -6,29 +6,33 @@
 trigger:
 - master
 
-strategy:
-  matrix:
-    Python27:
-      python.version: '2.7'
-      imageName: ubuntu-latest
-    Python35:
-      python.version: '3.5'
-      imageName: ubuntu-latest
-    Python36:
-      python.version: '3.9'
-      imageName: windows-latest
-    Python37:
-      python.version: '3.7'
-      imageName: macos-latest
-
-pool:
-  vmImage: $(imageName)
-
 parameters:
 - name: succeed
   displayName: Succeed or fail
   type: boolean
   default: false
+
+
+# strategy:
+#   matrix:
+#     Python27:
+#       python.version: '2.7'
+#       imageName: ubuntu-latest
+#     Python35:
+#       python.version: '3.5'
+#       imageName: ubuntu-latest
+#     Python36:
+#       python.version: '3.9'
+#       imageName: windows-latest
+#     Python37:
+#       python.version: '3.7'
+#       imageName: macos-latest
+
+pool:
+  vmImage: $(imageName)
+  python.version: '3.5'
+
+
 
 jobs:
   - job: Work
