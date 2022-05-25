@@ -72,7 +72,7 @@ stages:
           AZURE_DEVOPS_EXT_PAT: $(System.AccessToken)
         displayName: 'Create work item on failure'
   
-  - stage: Build
+  - stage: Deploy
     jobs:
     - job: Work
       steps:
