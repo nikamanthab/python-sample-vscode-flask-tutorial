@@ -15,7 +15,7 @@ strategy:
     #   python.version: '3.5'
     Python36:
       python.version: '3.6'
-      imgeName: windows-latest
+      imageName: windows-latest
     Python37:
       python.version: '3.7'
       imageName: macos-latest
