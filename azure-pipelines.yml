@@ -48,7 +48,7 @@ stages:
       - task: UsePythonVersion@0
         inputs:
           versionSpec: parameters.python_version
-        displayName: Use parameters.python_version
+        displayName: Use ${{parameters.python_version}}
         condition: eq(${{ parameters.succeed }}, false)
       
       - script: |
