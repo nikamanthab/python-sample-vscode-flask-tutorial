@@ -29,7 +29,7 @@ parameters:
 #       imageName: macos-latest
 
 pool:
-  vmImage: $(imageName)
+  vmImage: ubuntu-latest
   python.version: '3.5'
 
 
