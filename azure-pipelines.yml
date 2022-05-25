@@ -44,8 +44,8 @@ jobs:
     # Only run this command if the succeed variable is set to false
     - task: UsePythonVersion@0
       inputs:
-        versionSpec: '$(python.version)'
-      displayName: 'Use Python $(python.version)'
+        versionSpec: '3.5'
+      displayName: 'Use Python 3.5'
       condition: eq(${{ parameters.succeed }}, false)
     
     - script: |
