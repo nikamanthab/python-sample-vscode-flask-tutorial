@@ -32,45 +32,53 @@ pool:
   vmImage: ubuntu-latest
   python.version: '3.5'
 
+stages:
+  - stage: Build
+    jobs:
+    - job: Work
+      steps:
+      - script: echo Hello, world!
+        displayName: 'Run a one-line script'
 
+      # This malformed command causes the job to fail
+      # Only run this command if the succeed variable is set to false
+      - task: UsePythonVersion@0
+        inputs:
+          versionSpec: '3.5'
+        displayName: 'Use Python 3.5'
+        condition: eq(${{ parameters.succeed }}, false)
+      
+      - script: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+        displayName: 'Install dependencies'
 
-jobs:
-  - job: Work
-    steps:
-    - script: echo Hello, world!
+      - script: |
+          pip install pytest pytest-azurepipelines
+          pytest
+        displayName: 'pytest'
+
+    - job: ErrorHandler
+      dependsOn: Work
+      condition: failed()
+      steps: 
+      - bash: |
+          az boards work-item create \
+            --title "Build $(build.buildNumber) failed" \
+            --type bug \
+            --org $(System.TeamFoundationCollectionUri) \
+            --project $(System.TeamProject)
+        env: 
+          AZURE_DEVOPS_EXT_PAT: $(System.AccessToken)
+        displayName: 'Create work item on failure'
+  
+  - stage: Build
+    jobs:
+    - job: Work
+      steps:
+      - script: echo 'nitin is great'
       displayName: 'Run a one-line script'
 
-    # This malformed command causes the job to fail
-    # Only run this command if the succeed variable is set to false
-    - task: UsePythonVersion@0
-      inputs:
-        versionSpec: '3.5'
-      displayName: 'Use Python 3.5'
-      condition: eq(${{ parameters.succeed }}, false)
-    
-    - script: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
-      displayName: 'Install dependencies'
-
-    - script: |
-        pip install pytest pytest-azurepipelines
-        pytest
-      displayName: 'pytest'
-
-  - job: ErrorHandler
-    dependsOn: Work
-    condition: failed()
-    steps: 
-    - bash: |
-        az boards work-item create \
-          --title "Build $(build.buildNumber) failed" \
-          --type bug \
-          --org $(System.TeamFoundationCollectionUri) \
-          --project $(System.TeamProject)
-      env: 
-        AZURE_DEVOPS_EXT_PAT: $(System.AccessToken)
-      displayName: 'Create work item on failure'
 # steps:
 # - task: UsePythonVersion@0
 #   inputs:
