@@ -11,7 +11,10 @@ parameters:
   displayName: Succeed or fail
   type: boolean
   default: false
-
+- name: python_version
+  displayName: : Python Version
+  type: string
+  default: 3.9
 
 # strategy:
 #   matrix:
@@ -44,8 +47,8 @@ stages:
       # Only run this command if the succeed variable is set to false
       - task: UsePythonVersion@0
         inputs:
-          versionSpec: '3.5'
-        displayName: 'Use Python 3.5'
+          versionSpec: '${{parameters.python_version}}'
+        displayName: 'Use ${{parameters.python_version}}'
         condition: eq(${{ parameters.succeed }}, false)
       
       - script: |
